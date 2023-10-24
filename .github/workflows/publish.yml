@@ -1,4 +1,4 @@
-name: Build
+name: Publish App
 on: [push, pull_request]
 
 jobs:
@@ -10,21 +10,33 @@ jobs:
         os: [macos-latest, ubuntu-latest, windows-latest]
 
     steps:
-    - uses: actions/checkout@v2
-    - uses: actions/setup-node@master
+    - name: Github Checkout
+      uses: actions/checkout@v3
+
+    - name: Use Node.js
+    - uses: actions/setup-node@v3
       with:
         node-version: 20
-    - uses: actions/setup-python@v2
+
+    - name: Use Python
+    - uses: actions/setup-python@v4
       with:
-        python-version: 3.9
-    - name: install python packages
+        python-version: '3.9'
+
+    - name: Install Python Packages
       run: pip install -r requirements.txt pyinstaller
-    - name: package pyinstaller
+
+    - name: Run Pyinstaller
       run: pyinstaller --noconsole --noconfirm --distpath resources app.py --collect-all pymatgen --collect-all OgreInterface --collect-all spglib
-    - uses: actions/upload-artifact@v2
+
+    - uses: actions/upload-artifact@v3
       with:
         path: resources/*
-    - name: install dependencies
+
+    - name: Install Dependencies
       run: yarn install --immutable --immutable-cache --check-cache
-    - name: build package
-      run: yarn make
+
+    - name: Publish App
+      env:
+        GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
+      run: yarn publish
