@@ -3,6 +3,15 @@ import AppContext from "../AppContext/AppContext.jsx";
 import BaseCard from "../BaseCard/BaseCard.jsx";
 import { get, post } from "../../utils/requests.js";
 import { data } from "autoprefixer";
+// Electron Inter Process Communication and dialog
+// const { ipcRenderer } = require('node:electron');
+// import { IpcRenderer } from "electron";
+
+// Dynamically generated TCP (open) port between 3000-3999
+const {ipcRenderer} = window;
+const port = ipcRenderer.sendSync('get-port-number');
+
+console.log("PORT:", port)
 
 function FileUploader(props) {
 	const { film, substrate } = useContext(AppContext);
@@ -27,7 +36,7 @@ function FileUploader(props) {
 		// console.log(Object.fromEntries(fd.entries()))
 
 		// post(fd, "api/structure_upload", setData);
-		fetch("http://localhost:5000/api/structure_upload", {
+		fetch(`http://localhost:${port}/api/structure_upload`, {
 			method: "POST",
 			body: fd,
 		})

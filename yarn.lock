@@ -3966,6 +3966,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"get-port@npm:^7.0.0":
+  version: 7.0.0
+  resolution: "get-port@npm:7.0.0"
+  checksum: e9087f62d086bbb70f20c0a208e7cac552679c1426e29e0607eb1b8907a5cc4509337d5971b7f635385cd2a773a14cd21b7d9c3254a2eb5ebeaf5f8fde19fb07
+  languageName: node
+  linkType: hard
+
 "get-stream@npm:^4.0.0":
   version: 4.1.0
   resolution: "get-stream@npm:4.1.0"
@@ -5733,6 +5740,7 @@ __metadata:
     css-loader: ^6.0.0
     electron: 27.0.0
     electron-squirrel-startup: ^1.0.0
+    get-port: ^7.0.0
     node-loader: ^2.0.0
     postcss: ^8.4.31
     postcss-loader: ^7.3.3

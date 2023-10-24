@@ -1,10 +1,12 @@
-const { app, BrowserWindow } = require("electron");
-const path = require("path");
-const {spawn} = require("child_process")
+const { app, BrowserWindow, ipcMain } = require("electron");
+const path = require("node:path");
+const {spawn} = require("node:child_process")
 const { get } = require('axios');
-const kill = require('tree-kill')
+const kill = require('tree-kill');
+import getPort, {portNumbers} from "get-port";
 
 let pythonServer;
+const port = await getPort({port: portNumbers(3001, 3999)});
 
 // Handle creating/removing shortcuts on Windows when installing/uninstalling.
 if (require("electron-squirrel-startup")) {
@@ -17,7 +19,11 @@ const createWindow = () => {
 		width: 800,
 		height: 600,
 		webPreferences: {
-			preload: MAIN_WINDOW_PRELOAD_WEBPACK_ENTRY,
+			// preload: MAIN_WINDOW_PRELOAD_WEBPACK_ENTRY,
+      preload: path.join(app.getAppPath(), "src", "preload.js"),
+      // preload: "./preload.js",
+      // contextIsolation: true,
+      // nodeIntegration: true,
 		},
 	});
 
@@ -29,17 +35,21 @@ const createWindow = () => {
 
   if (app.isPackaged) {
     const runFlask = {
-      darwin: `open -gj "${path.join(process.resourcesPath, 'resources', 'app.app')}" --args`,
+      darwin: `open -g "${path.join(process.resourcesPath, 'resources', 'app.app')}"`,
       linux: `${path.join(process.resourcesPath, "app", "app")}`,
       win32: `start ${path.join(process.resourcesPath, "app", "app.exe")}`,
       // linux: './resources/app/app',
       // win32: 'start ./resources/app/app.exe'
     }[process.platform];
   
-    pythonServer = spawn(`${runFlask}`, { detached: false, shell: true, stdio: 'pipe' });
+    pythonServer = spawn(`${runFlask} ${port}`, { detached: false, shell: true, stdio: 'pipe' });
   } else {
-    pythonServer = spawn(`python app.py`, { detached: true, shell: true, stdio: 'inherit' });
+    pythonServer = spawn(`python app.py ${port}`, { detached: true, shell: true, stdio: 'inherit' });
   }
+
+  ipcMain.on('get-port-number', (event, _arg) => {
+    event.returnValue = port;
+  });
 };
 
 // This method will be called when Electron has finished

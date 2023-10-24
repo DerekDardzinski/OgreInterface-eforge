@@ -22,8 +22,8 @@ from OgreInterface.miller import MillerSearch
 from OgreInterface import utils as ogre_utils
 
 app = Flask(__name__)
-# app_config = {"host": "0.0.0.0", "port": sys.argv[1]}
-app_config = {"host": "0.0.0.0", "port": "5000"}
+app_config = {"host": "0.0.0.0", "port": sys.argv[1]}
+# app_config = {"host": "0.0.0.0", "port": "5000"}
 
 """
 ---------------------- DEVELOPER MODE CONFIG -----------------------

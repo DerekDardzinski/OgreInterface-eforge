@@ -16,7 +16,15 @@ import { GizmoHelper } from "../BasisVectors/GizmoHelper.jsx";
 import { SpotLight, Stage } from "@react-three/drei";
 import { invalidate, useFrame, useThree } from "@react-three/fiber";
 import * as THREE from "three";
-import { get, post } from "../../utils/requests.js";
+// import { get, post } from "../../utils/requests.js";
+
+// Electron Inter Process Communication and dialog
+// const { ipcRenderer } = window.require('electron');
+// import { IpcRenderer } from "electron";
+
+// Dynamically generated TCP (open) port between 3000-3999
+const {ipcRenderer} = window;
+const port = ipcRenderer.sendSync('get-port-number');
 
 function CameraRig(props) {
 	const currentView = props.view;
@@ -97,7 +105,7 @@ function StructureView(props) {
 		// 	setBasis(data.basis);
 		// 	setViewData(data.viewData);
 		// });
-		fetch("http://localhost:5000/api/structure_to_three", {
+		fetch(`http://localhost:${port}/api/structure_to_three`, {
 			method: "POST",
 			body: structureData.structure,
 			// mode: 'no-cors',
