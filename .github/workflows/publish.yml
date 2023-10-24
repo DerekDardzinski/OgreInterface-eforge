@@ -17,6 +17,7 @@ jobs:
       uses: actions/setup-node@v3
       with:
         node-version: 20
+        always-auth: true
 
     - name: Use Python
       uses: actions/setup-python@v4
@@ -39,4 +40,4 @@ jobs:
     - name: Publish App
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      run: yarn publish
+      run: npx electron-forge publish
