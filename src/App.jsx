@@ -18,7 +18,7 @@ function App() {
 				substrate: [substrateData, setSubstrateData],
 			}}
 		>
-			<div className='bg-pagebg w-screen h-full min-h-screen'>
+			<div className='bg-base-100 w-screen h-full min-h-screen'>
 				<div className='flex items-top justify-center'>
 					<div className='max-w-[100vh] flex-auto grid grid-cols-1 md:grid-cols-2 gap-6 p-6'>
 						<div className='md:col-span-2'>
